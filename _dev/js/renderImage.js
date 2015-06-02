@@ -1,5 +1,5 @@
 var imgWrapper = React.createClass({
-    displayName: 'switchSource',
+    displayName: 'renderImage',
     getInitialState: function () {
         return {
             activeImage: 'assets/images/159--00000.png',

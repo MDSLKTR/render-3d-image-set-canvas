@@ -1,5 +1,5 @@
-# react.js image-set switcher
-Image-set switcher build with react.js and hammer.js
+# react.js 3d image renderer from pre-rendered files
+3d image renderer build with react.js and hammer.js
 
 ## used techniques
 - react.js
