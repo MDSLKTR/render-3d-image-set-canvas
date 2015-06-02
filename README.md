@@ -7,6 +7,7 @@
 - Grunt
 - Bower
 - Vagrant
+- appcache for assets
 
 
 ## information
