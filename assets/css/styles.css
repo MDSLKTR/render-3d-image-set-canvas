@@ -3,7 +3,13 @@
   height: 50vh;
   margin: 0 auto;
   position: relative; }
+  .image-preload .intro {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%); }
   .image-preload img {
+    -webkit-user-drag: none;
     position: absolute;
     display: none;
     left: 50%;

@@ -85,6 +85,7 @@
 	// Custom Globals
 	// additional predefined global variables
 	"globals": {
-		"React": true
+		"React": true,
+      "Hammer": true
     }
 }

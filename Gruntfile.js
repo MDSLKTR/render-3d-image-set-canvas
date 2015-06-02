@@ -81,7 +81,8 @@ module.exports = function (grunt) {
                 files: {
                     'assets/js/vendor.min.js': [
                         '_vendor/jquery/dist/jquery.js',
-                        '_vendor/react/react.js'
+                        '_vendor/react/react.js',
+                        '_vendor/hammerjs/hammer.min.js'
 
                     ]
                 }

@@ -1,8 +1,9 @@
 # react.js image-set switcher
-Image-set switcher build with react.js
+Image-set switcher build with react.js and hammer.js
 
 ## used techniques
 - react.js
+- hammer.js
 - Grunt
 - Bower
 - Vagrant

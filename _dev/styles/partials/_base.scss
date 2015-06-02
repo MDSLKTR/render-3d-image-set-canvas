@@ -4,7 +4,14 @@
   margin: 0 auto;
   position: relative;
 
+  .intro {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   img {
+    -webkit-user-drag: none;
     position: absolute;
     display: none;
     left: 50%;
