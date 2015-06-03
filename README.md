@@ -11,6 +11,7 @@
 
 
 ## information
+- open index.html in the browser or
 - vagrant up -> port: 4444
 - grunt css/js to compile
 - grunt appcache to generate new manifest
