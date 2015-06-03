@@ -40,12 +40,11 @@ body {
     font-size: 25px;
     z-index: 1;
     bottom: 0;
-    padding: 25px;
+    padding: 20px;
     cursor: pointer;
     border-style: solid;
     border-radius: 7px;
-    background: #778899;
-    appearance: none; }
+    background: #778899; }
     .image-preload button.button-right {
       position: absolute;
       right: 2.5%; }
