@@ -22,7 +22,6 @@
   img {
     -webkit-user-drag: none;
     position: absolute;
-    display: none;
     visibility: hidden;
     opacity: 0;
     left: 50%;
@@ -30,7 +29,7 @@
   }
 
   .active img {
-    visibility: visbible;
+    visibility: visible;
     opacity: 1;
     display: block;
   }
