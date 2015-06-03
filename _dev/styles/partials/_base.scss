@@ -23,11 +23,15 @@
     -webkit-user-drag: none;
     position: absolute;
     display: none;
+	visibility: hidden;
+	opacity: 0;
     left: 50%;
     transform: translateX(-50%);
   }
 
   .active img {
+    visibility: visbible;
+	opacity: 1;
     display: block;
   }
 
