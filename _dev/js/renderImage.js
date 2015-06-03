@@ -3,7 +3,8 @@ var imgWrapper = React.createClass({
     getInitialState: function () {
         return {
             activeImage: 'assets/images/159--00000.png',
-            activeAngle: 0
+            activeAngle: 0,
+            step: 0
         };
     },
 
@@ -14,7 +15,7 @@ var imgWrapper = React.createClass({
         this.hammer.on('panleft', this.panLeft);
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount: function () {
         this.hammer.off('panright', this.panRight);
         this.hammer.off('panleft', this.panLeft);
     },
@@ -45,20 +46,22 @@ var imgWrapper = React.createClass({
         }
     },
 
-    panLeft: function() {
-        if (this.state.activeAngle < 330) {
+    panLeft: function (e) {
+        console.log(e.distance);
+        if (this.state.activeAngle > 0) {
             this.setState({
-                activeAngle: this.state.activeAngle + 30
+                activeAngle: this.state.activeAngle - 30
             });
-            this.mapImages(this.state.activeAngle + 30);
+            this.mapImages(this.state.activeAngle - 30);
         } else {
             this.setState({
-                activeAngle: 0
+                activeAngle: 330
             });
-            this.mapImages(0);
+            this.mapImages(330);
         }
     },
-    panRight: function() {
+    panRight: function (e) {
+        console.log(e.distance);
         if (this.state.activeAngle > 0) {
             this.setState({
                 activeAngle: this.state.activeAngle - 30
@@ -122,12 +125,14 @@ var imgWrapper = React.createClass({
         });
 
         return (
-            React.DOM.div({className: 'image-preload'}, build,
-                React.DOM.span({className: 'intro'}, 'Click and Drag or click the buttons to rotate'),
-                React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}),
-                React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}),
+            React.DOM.div({className: 'image-preload'},
+                build,
+                React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
+                React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
+                React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}, 'L'),
                 React.DOM.div({className: 'active'},
-                    React.DOM.img({src: this.state.activeImage, 'data-angle': this.state.activeAngle}))
+                    React.DOM.img({src: this.state.activeImage, 'data-angle': this.state.activeAngle})
+                )
             )
         );
     }

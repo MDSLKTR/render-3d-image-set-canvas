@@ -4,9 +4,14 @@
   font-weight: normal;
   font-style: normal; }
 
+body {
+  -ms-touch-action: none;
+      touch-action: none; }
+
 .image-preload {
   font-family: 'robotomedium', Arial, Helvetica, sans-serif;
-  width: 50vw;
+  width: 100%;
+  max-width: 720px;
   height: 50vh;
   margin: 0 auto;
   position: relative; }
@@ -14,8 +19,10 @@
     position: absolute;
     left: 50%;
     -webkit-transform: translateX(-50%);
-            transform: translateX(-50%); }
+            transform: translateX(-50%);
+    bottom: 0; }
   .image-preload img {
+    width: 100%;
     -webkit-user-drag: none;
     position: absolute;
     visibility: hidden;
@@ -24,13 +31,21 @@
     -webkit-transform: translateX(-50%);
             transform: translateX(-50%); }
   .image-preload .active img {
+    cursor: pointer;
     visibility: visible;
     opacity: 1;
     display: block; }
   .image-preload button {
+    line-height: 25px;
+    font-size: 25px;
     z-index: 1;
-    width: 50px;
-    height: 50px; }
+    bottom: 0;
+    padding: 25px;
+    cursor: pointer;
+    border-style: solid;
+    border-radius: 7px;
+    background: #778899;
+    appearance: none; }
     .image-preload button.button-right {
       position: absolute;
       right: 2.5%; }

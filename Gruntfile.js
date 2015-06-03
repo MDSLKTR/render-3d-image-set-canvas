@@ -82,7 +82,7 @@ module.exports = function (grunt) {
                     'assets/js/vendor.min.js': [
                         '_vendor/jquery/dist/jquery.js',
                         '_vendor/react/react.js',
-                        '_vendor/hammerjs/hammer.min.js'
+                        '_vendor/hammerjs/hammer.js'
 
                     ]
                 }
@@ -127,7 +127,7 @@ module.exports = function (grunt) {
                     ]
                 },
                 options : {
-                    proxy: 'http://localhost:1234'
+                    proxy: 'http://localhost:4444'
                 }
             }
         },
