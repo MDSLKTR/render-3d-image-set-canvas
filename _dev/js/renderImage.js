@@ -9,7 +9,7 @@ var imgWrapper = React.createClass({
     },
 
     componentDidMount: function () {
-        this.hammer = new Hammer(this.getDOMNode());
+        this.hammer = new Hammer(React.findDOMNode(this.refs.hammerHook));
         this.hammer.get('pan').set({threshold: 15});
         this.hammer.on('panright', this.panRight);
         this.hammer.on('panleft', this.panLeft);
@@ -135,7 +135,7 @@ var imgWrapper = React.createClass({
                 React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
                 React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
                 React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}, 'L'),
-                React.DOM.div({className: 'active'},
+                React.DOM.div({ref: 'hammerHook', className: 'active'},
                     React.DOM.img({src: this.state.activeImage, 'data-angle': this.state.activeAngle})
                 )
             )
