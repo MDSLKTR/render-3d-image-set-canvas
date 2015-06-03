@@ -47,7 +47,8 @@ var imgWrapper = React.createClass({
     },
 
     panLeft: function (e) {
-        console.log(e.distance);
+        console.log('Distance traveled: ' + e.distance);
+        console.log('X-pos: ' + e.deltaX);
         if (this.state.activeAngle > 0) {
             this.setState({
                 activeAngle: this.state.activeAngle - 30
@@ -61,7 +62,8 @@ var imgWrapper = React.createClass({
         }
     },
     panRight: function (e) {
-        console.log(e.distance);
+        console.log('Distance traveled: ' + e.distance);
+        console.log('X-pos: ' + e.deltaX);
         if (this.state.activeAngle > 0) {
             this.setState({
                 activeAngle: this.state.activeAngle - 30
