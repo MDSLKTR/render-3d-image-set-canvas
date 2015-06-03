@@ -47,6 +47,7 @@ var imgWrapper = React.createClass({
     },
 
     panLeft: function (e) {
+        // http://hammerjs.github.io/api/ Event objects
         console.log('Distance traveled: ' + e.distance);
         console.log('X-pos: ' + e.deltaX);
         if (this.state.activeAngle > 0) {
