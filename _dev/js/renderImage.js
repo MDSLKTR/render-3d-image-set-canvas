@@ -1,27 +1,37 @@
-var imageArray = [
-        ['assets/images/159--00000.png', 0],
-        ['assets/images/159--00003.png', 30],
-        ['assets/images/159--00006.png', 60],
-        ['assets/images/159--00009.png', 90],
-        ['assets/images/159--00012.png', 120],
-        ['assets/images/159--00015.png', 150],
-        ['assets/images/159--00018.png', 180],
-        ['assets/images/159--00021.png', 210],
-        ['assets/images/159--00024.png', 240],
-        ['assets/images/159--00027.png', 270],
-        ['assets/images/159--00030.png', 300],
-        ['assets/images/159--00033.png', 330]
-    ],
-    build,
+var build,
     i,
+    fetchProducts,
+    jsonUrl = 'assets/data/set.json',
+    loader,
     imgWrapper = React.createClass({
         displayName: 'renderImage',
         getInitialState: function () {
             return {
-                activeImage: 'assets/images/159--00000.png',
+                activeImage: 'assets/icons/blank.gif',
                 activeAngle: 0,
-                step: 0
+                loading: true
             };
+        },
+
+        getJson: function() {
+            $.ajax({
+                url: jsonUrl,
+                dataType: 'json',
+                success: function (data) {
+                    this.setState({
+                        imageData: data.car1,
+                        activeImage: data.car1[0].src,
+                        loading: false
+                    });
+
+                    console.log('product images fetched!');
+                    clearInterval(fetchProducts);
+
+                }.bind(this),
+                error: function (xhr, status, err) {
+                    console.error(jsonUrl, status, err.toString());
+                }.bind(this)
+            });
         },
 
         componentDidMount: function () {
@@ -29,6 +39,8 @@ var imageArray = [
             this.hammer.get('pan').set({threshold: 15});
             this.hammer.on('panright', this.panRight);
             this.hammer.on('panleft', this.panLeft);
+
+            fetchProducts = setInterval(this.getJson, 500);
         },
 
         componentWillUnmount: function () {
@@ -37,10 +49,10 @@ var imageArray = [
         },
 
         mapImages: function (angle) {
-            for (i = 0; i < imageArray.length; i++) {
-                if (angle === imageArray[i][1]) {
+            for (i = 0; i < this.state.imageData.length; i++) {
+                if (angle === this.state.imageData[i].angle) {
                     this.setState({
-                        activeImage: imageArray[i][0]
+                        activeImage: this.state.imageData[i].src
                     });
                 }
             }
@@ -109,18 +121,28 @@ var imageArray = [
         },
 
         render: function () {
+            loader = [];
             build = [];
-            imageArray.forEach(function (image) {
-                build.push(React.DOM.img({key: image.key, src: image[0], 'data-angle': image[1]}));
-            });
+
+            if (this.state.loading === true) {
+                loader.push(React.DOM.img({className: 'loader', key: loader.key, alt: 'loader', src: '/assets/icons/ajax-loader.svg'}));
+                loader.push(React.DOM.span({className: 'loader-text', key: loader.key}, 'Loading Product View...'));
+            }
+
+            if (this.state.imageData) {
+                this.state.imageData.forEach(function (image) {
+                    build.push(React.DOM.img({key: image.key, alt: 'product-view-' + image.angle, src: image.src, 'data-angle': image.angle}));
+                });
+            }
 
             return (
                 React.DOM.div({className: 'image-container'},
+                    loader,
                     React.DOM.div({className: 'image-set'},
                         build
                     ),
                     React.DOM.div({ref: 'hammerHook', className: 'image-active'},
-                        React.DOM.img({src: this.state.activeImage, 'data-angle': this.state.activeAngle})
+                        React.DOM.img({src: this.state.activeImage, alt: 'product-view-' + this.state.activeAngle, 'data-angle': this.state.activeAngle})
                     ),
                     React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
                     React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
@@ -131,4 +153,4 @@ var imageArray = [
     });
 
 React.render(React.createElement(imgWrapper),
-    document.getElementById('container'));
+    document.getElementById('main'));

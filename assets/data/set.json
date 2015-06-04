@@ -1,0 +1,52 @@
+{
+  "car1": [
+    {
+      "src": "assets/images/159--00000.png",
+      "angle": 0
+    },
+    {
+      "src": "assets/images/159--00003.png",
+      "angle": 30
+    },
+    {
+      "src": "assets/images/159--00006.png",
+      "angle": 60
+    },
+    {
+      "src": "assets/images/159--00009.png",
+      "angle": 90
+    },
+    {
+      "src": "assets/images/159--00012.png",
+      "angle": 120
+    },
+    {
+      "src": "assets/images/159--00015.png",
+      "angle": 150
+    },
+    {
+      "src": "assets/images/159--00018.png",
+      "angle": 180
+    },
+    {
+      "src": "assets/images/159--00021.png",
+      "angle": 210
+    },
+    {
+      "src": "assets/images/159--00024.png",
+      "angle": 240
+    },
+    {
+      "src": "assets/images/159--00027.png",
+      "angle": 270
+    },
+    {
+      "src": "assets/images/159--00030.png",
+      "angle": 300
+    },
+    {
+      "src": "assets/images/159--00033.png",
+      "angle": 330
+    }
+  ]
+}

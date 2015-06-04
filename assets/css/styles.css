@@ -21,6 +21,23 @@ body {
     -webkit-transform: translateX(-50%);
             transform: translateX(-50%);
     bottom: 0; }
+  .image-container .loader,
+  .image-container .loader-text {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    opacity: 1;
+    visibility: visible; }
+  .image-container .loader {
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    top: 30%;
+    width: 80px;
+    height: 80px; }
+  .image-container .loader-text {
+    top: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%); }
   .image-container img {
     width: 100%;
     -webkit-user-drag: none;

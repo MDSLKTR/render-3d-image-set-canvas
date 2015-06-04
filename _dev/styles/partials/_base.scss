@@ -25,6 +25,27 @@ body {
     bottom: 0;
   }
 
+  .loader,
+  .loader-text {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .loader {
+    transform: translateX(-50%);
+    top: 30%;
+    width: 80px;
+    height: 80px;
+  }
+
+  .loader-text {
+    top: 50%;
+    transform: translateX(-50%);
+  }
+
   img {
     width: 100%;
     -webkit-user-drag: none;
