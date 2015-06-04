@@ -3,6 +3,8 @@ var build,
     fetchProducts,
     jsonUrl = 'assets/data/set.json',
     loader,
+    start,
+    end,
     imgWrapper = React.createClass({
         displayName: 'renderImage',
         getInitialState: function () {
@@ -13,19 +15,27 @@ var build,
             };
         },
 
-        getJson: function() {
+        getJson: function (product) {
+            start = new Date().getTime();
             $.ajax({
+                product: product,
                 url: jsonUrl,
                 dataType: 'json',
                 success: function (data) {
                     this.setState({
-                        imageData: data.car1,
-                        activeImage: data.car1[0].src,
+                        imageData: data[product],
+                        activeImage: data[product][0].src,
                         loading: false
                     });
 
+                    //localStorage.setItem('view-data', JSON.stringify(this.state.imageData));
+                    //console.log(localStorage.getItem('view-data'));
+
                     console.log('product images fetched!');
                     clearInterval(fetchProducts);
+
+                    end = new Date().getTime();
+                    console.log('product image list fetched in', end - start, 'ms');
 
                 }.bind(this),
                 error: function (xhr, status, err) {
@@ -40,7 +50,7 @@ var build,
             this.hammer.on('panright', this.panRight);
             this.hammer.on('panleft', this.panLeft);
 
-            fetchProducts = setInterval(this.getJson, 500);
+            fetchProducts = setInterval(this.getJson('car1'), 500);
         },
 
         componentWillUnmount: function () {
@@ -125,13 +135,23 @@ var build,
             build = [];
 
             if (this.state.loading === true) {
-                loader.push(React.DOM.img({className: 'loader', key: loader.key, alt: 'loader', src: '/assets/icons/ajax-loader.svg'}));
+                loader.push(React.DOM.img({
+                    className: 'loader',
+                    key: loader.key,
+                    alt: 'loader',
+                    src: '/assets/icons/ajax-loader.svg'
+                }));
                 loader.push(React.DOM.span({className: 'loader-text', key: loader.key}, 'Loading Product View...'));
             }
 
             if (this.state.imageData) {
                 this.state.imageData.forEach(function (image) {
-                    build.push(React.DOM.img({key: image.key, alt: 'product-view-' + image.angle, src: image.src, 'data-angle': image.angle}));
+                    build.push(React.DOM.img({
+                        key: image.key,
+                        alt: 'product-view-' + image.angle,
+                        src: image.src,
+                        'data-angle': image.angle
+                    }));
                 });
             }
 
@@ -142,7 +162,11 @@ var build,
                         build
                     ),
                     React.DOM.div({ref: 'hammerHook', className: 'image-active'},
-                        React.DOM.img({src: this.state.activeImage, alt: 'product-view-' + this.state.activeAngle, 'data-angle': this.state.activeAngle})
+                        React.DOM.img({
+                            src: this.state.activeImage,
+                            alt: 'product-view-' + this.state.activeAngle,
+                            'data-angle': this.state.activeAngle
+                        })
                     ),
                     React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
                     React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
