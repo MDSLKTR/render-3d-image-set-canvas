@@ -8,20 +8,20 @@ body {
   -ms-touch-action: none;
       touch-action: none; }
 
-.image-preload {
+.image-container {
   font-family: 'robotomedium', Arial, Helvetica, sans-serif;
   width: 100%;
   max-width: 720px;
   height: 50vh;
   margin: 0 auto;
   position: relative; }
-  .image-preload .intro {
+  .image-container .intro {
     position: absolute;
     left: 50%;
     -webkit-transform: translateX(-50%);
             transform: translateX(-50%);
     bottom: 0; }
-  .image-preload img {
+  .image-container img {
     width: 100%;
     -webkit-user-drag: none;
     position: absolute;
@@ -30,12 +30,12 @@ body {
     left: 50%;
     -webkit-transform: translateX(-50%);
             transform: translateX(-50%); }
-  .image-preload .active img {
+  .image-container .image-active img {
     cursor: pointer;
     visibility: visible;
     opacity: 1;
     display: block; }
-  .image-preload button {
+  .image-container button {
     line-height: 25px;
     font-size: 25px;
     z-index: 1;
@@ -45,10 +45,10 @@ body {
     border-style: solid;
     border-radius: 7px;
     background: #778899; }
-    .image-preload button.button-right {
+    .image-container button.button-right {
       position: absolute;
       right: 2.5%; }
-    .image-preload button.button-left {
+    .image-container button.button-left {
       position: absolute;
       left: 2.5%; }
 

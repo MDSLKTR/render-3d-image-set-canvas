@@ -12,6 +12,8 @@ var imageArray = [
         ['assets/images/159--00030.png', 300],
         ['assets/images/159--00033.png', 330]
     ],
+    build,
+    i,
     imgWrapper = React.createClass({
         displayName: 'renderImage',
         getInitialState: function () {
@@ -35,8 +37,6 @@ var imageArray = [
         },
 
         mapImages: function (angle) {
-            var i;
-
             for (i = 0; i < imageArray.length; i++) {
                 if (angle === imageArray[i][1]) {
                     this.setState({
@@ -109,21 +109,22 @@ var imageArray = [
         },
 
         render: function () {
-            var build = [];
-
+            build = [];
             imageArray.forEach(function (image) {
                 build.push(React.DOM.img({key: image.key, src: image[0], 'data-angle': image[1]}));
             });
 
             return (
-                React.DOM.div({className: 'image-preload'},
-                    build,
+                React.DOM.div({className: 'image-container'},
+                    React.DOM.div({className: 'image-set'},
+                        build
+                    ),
+                    React.DOM.div({ref: 'hammerHook', className: 'image-active'},
+                        React.DOM.img({src: this.state.activeImage, 'data-angle': this.state.activeAngle})
+                    ),
                     React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
                     React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
-                    React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}, 'L'),
-                    React.DOM.div({ref: 'hammerHook', className: 'active'},
-                        React.DOM.img({src: this.state.activeImage, 'data-angle': this.state.activeAngle})
-                    )
+                    React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}, 'L')
                 )
             );
         }
