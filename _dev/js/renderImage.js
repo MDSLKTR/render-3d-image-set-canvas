@@ -89,16 +89,16 @@ var build,
             console.log('Distance traveled: ' + e.distance);
             console.log('X-pos: ' + e.deltaX);
             console.log('Velocity: ' + e.velocityX);
-            if (this.state.activeAngle > 0) {
+            if (this.state.activeAngle < 330) {
                 this.setState({
-                    activeAngle: this.state.activeAngle - 30
+                    activeAngle: this.state.activeAngle + 30
                 });
-                this.mapImages(this.state.activeAngle - 30);
+                this.mapImages(this.state.activeAngle + 30);
             } else {
                 this.setState({
-                    activeAngle: 330
+                    activeAngle: 0
                 });
-                this.mapImages(330);
+                this.mapImages(0);
             }
         },
 
