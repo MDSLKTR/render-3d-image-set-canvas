@@ -76,7 +76,8 @@ module.exports = function (grunt) {
         uglify: {
             vendor: {
                 options: {
-                    sourceMap: false
+                    sourceMap: false,
+                    mangle: true
                 },
                 files: {
                     'assets/js/vendor.min.js': [
@@ -89,7 +90,8 @@ module.exports = function (grunt) {
             },
             scripts: {
                 options: {
-                    sourceMap: false
+                    sourceMap: false,
+                    mangle: true
                 },
                 files: {
                     'assets/js/scripts.min.js': [
