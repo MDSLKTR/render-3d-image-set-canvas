@@ -7,7 +7,7 @@ var build,
         displayName: 'renderImage',
         getInitialState: function () {
             return {
-                activeImage: 'assets/icons/blank.gif',
+                activeImage: 'assets/icons/white.gif',
                 activeAngle: 0,
                 loading: true
             };
