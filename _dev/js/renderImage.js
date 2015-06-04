@@ -137,17 +137,17 @@ var build,
             if (this.state.loading === true) {
                 loader.push(React.DOM.img({
                     className: 'loader',
-                    key: loader.key,
+                    key: loader.id,
                     alt: 'loader',
                     src: '/assets/icons/ajax-loader.svg'
                 }));
-                loader.push(React.DOM.span({className: 'loader-text', key: loader.key}, 'Loading Product View...'));
+                loader.push(React.DOM.span({className: 'loader-text', key: loader.id}, 'Loading Product View...'));
             }
 
             if (this.state.imageData) {
                 this.state.imageData.forEach(function (image) {
                     build.push(React.DOM.img({
-                        key: image.key,
+                        key: image.id,
                         alt: 'product-view-' + image.angle,
                         src: image.src,
                         'data-angle': image.angle
