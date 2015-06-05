@@ -23,8 +23,9 @@ var build,
                 dataType: 'json',
                 success: function (data) {
                     this.setState({
-                        imageData: data[product],
-                        activeImage: data[product][0].src,
+                        imageData: data.products[product],
+                        activeImage: data.products[product][0].src,
+                        activeAngle: data.products[product][0].angle,
                         loading: false
                     });
 
@@ -46,16 +47,16 @@ var build,
 
         componentDidMount: function () {
             this.hammer = new Hammer(React.findDOMNode(this.refs.hammerHook));
-            this.hammer.get('pan').set({threshold: 15});
-            this.hammer.on('panright', this.panRight);
-            this.hammer.on('panleft', this.panLeft);
+            this.hammer.get('pan').set({threshold: 0, direction: Hammer.DIRECTION_ALL});
+            this.hammer.on('panup', this.panUp);
+            this.hammer.on('pandown', this.panDown);
 
-            fetchProducts = setInterval(this.getJson('car1'), 500);
+            fetchProducts = setInterval(this.getJson('id-12345'), 500);
         },
 
         componentWillUnmount: function () {
-            this.hammer.off('panright', this.panRight);
-            this.hammer.off('panleft', this.panLeft);
+            this.hammer.off('panup', this.panUp);
+            this.hammer.off('pandown', this.panDown);
         },
 
         mapImages: function (angle) {
@@ -68,7 +69,7 @@ var build,
             }
         },
 
-        panLeft: function (e) {
+        panDown: function (e) {
             // http://hammerjs.github.io/api/ Event objects
             console.log('Distance traveled: ' + e.distance);
             console.log('X-pos: ' + e.deltaX);
@@ -77,7 +78,7 @@ var build,
                 this.setState({
                     activeAngle: this.state.activeAngle - 30
                 });
-                this.mapImages(this.state.activeAngle - 30);
+                this.mapImages(this.state.activeAngle);
             } else {
                 this.setState({
                     activeAngle: 330
@@ -85,7 +86,7 @@ var build,
                 this.mapImages(330);
             }
         },
-        panRight: function (e) {
+        panUp: function (e) {
             console.log('Distance traveled: ' + e.distance);
             console.log('X-pos: ' + e.deltaX);
             console.log('Velocity: ' + e.velocityX);
@@ -93,7 +94,7 @@ var build,
                 this.setState({
                     activeAngle: this.state.activeAngle + 30
                 });
-                this.mapImages(this.state.activeAngle + 30);
+                this.mapImages(this.state.activeAngle);
             } else {
                 this.setState({
                     activeAngle: 0

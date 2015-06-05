@@ -12,7 +12,7 @@ body {
   font-family: 'robotomedium', Arial, Helvetica, sans-serif;
   width: 100%;
   max-width: 720px;
-  height: 50vh;
+  height: 350px;
   margin: 0 auto;
   position: relative; }
   .image-container .intro {
@@ -40,6 +40,7 @@ body {
             transform: translateX(-50%); }
   .image-container img {
     width: 100%;
+    max-width: 300px;
     -webkit-user-drag: none;
     position: absolute;
     visibility: hidden;
