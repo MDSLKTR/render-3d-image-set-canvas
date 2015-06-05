@@ -11,16 +11,18 @@ body {
 .image-container {
   font-family: 'robotomedium', Arial, Helvetica, sans-serif;
   width: 100%;
-  max-width: 720px;
-  height: 350px;
   margin: 0 auto;
   position: relative; }
+  .image-container .playground {
+    position: relative;
+    background: grey;
+    border: 1px solid black; }
   .image-container .intro {
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
-    bottom: 0; }
+    position: relative;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    display: inline-block; }
   .image-container .loader,
   .image-container .loader-text {
     position: absolute;
@@ -38,21 +40,11 @@ body {
     top: 50%;
     -webkit-transform: translateX(-50%);
             transform: translateX(-50%); }
-  .image-container img {
-    width: 100%;
-    max-width: 300px;
-    -webkit-user-drag: none;
+  .image-container .preload img {
+    top: 0;
     position: absolute;
     visibility: hidden;
-    opacity: 0;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%); }
-  .image-container .image-active img {
-    cursor: pointer;
-    visibility: visible;
-    opacity: 1;
-    display: block; }
+    opacity: 0; }
   .image-container button {
     line-height: 25px;
     font-size: 25px;
@@ -64,10 +56,10 @@ body {
     border-radius: 7px;
     background: #778899; }
     .image-container button.button-right {
-      position: absolute;
-      right: 2.5%; }
+      position: relative;
+      float: right; }
     .image-container button.button-left {
-      position: absolute;
-      left: 2.5%; }
+      position: relative;
+      float: left; }
 
 /*# sourceMappingURL=styles.css.map */

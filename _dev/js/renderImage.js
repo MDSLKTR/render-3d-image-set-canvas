@@ -9,9 +9,11 @@ var build,
         displayName: 'renderImage',
         getInitialState: function () {
             return {
-                activeImage: 'assets/icons/white.gif',
+                activeImage: '/assets/icons/white.gif',
                 activeAngle: 0,
-                loading: true
+                loading: true,
+                windowWidth: window.innerWidth,
+                windowHeight: window.innerHeight
             };
         },
 
@@ -29,9 +31,6 @@ var build,
                         loading: false
                     });
 
-                    //localStorage.setItem('view-data', JSON.stringify(this.state.imageData));
-                    //console.log(localStorage.getItem('view-data'));
-
                     console.log('product images fetched!');
                     clearInterval(fetchProducts);
 
@@ -46,11 +45,13 @@ var build,
         },
 
         componentDidMount: function () {
-            this.hammer = new Hammer(React.findDOMNode(this.refs.hammerHook));
+            this.hammer = new Hammer(React.findDOMNode(this.refs.canvas));
             this.hammer.get('pan').set({threshold: 0, direction: Hammer.DIRECTION_ALL});
             this.hammer.on('panup', this.panUp);
             this.hammer.on('pandown', this.panDown);
-
+            this.draw();
+            // probably needs debounce
+            window.addEventListener('resize', this.scale);
             fetchProducts = setInterval(this.getJson('id-12345'), 500);
         },
 
@@ -59,10 +60,45 @@ var build,
             this.hammer.off('pandown', this.panDown);
         },
 
+        getContext: function () {
+            return React.findDOMNode(this.refs.canvas).getContext('2d');
+        },
+
+        tick: function () {
+            // Block updates until next animation frame.
+            this._frameReady = false;
+            this.draw();
+            requestAnimationFrame(this.afterTick);
+        },
+
+        afterTick: function () {
+            // Execute pending draw that may have been scheduled during previous frame
+            this._frameReady = true;
+            if (this._pendingTick) {
+                this._pendingTick = false;
+                this.batchedTick();
+            }
+        },
+
+        batchedTick: function () {
+            if (this._frameReady === false) {
+                this._pendingTick = true;
+                return;
+            }
+            this.tick();
+        },
+
+        scale: function () {
+              this.setState({
+                  windowWidth: window.innerWidth,
+                  windowHeight: window.innerHeight
+          });
+        },
+
         mapImages: function (angle) {
             for (i = 0; i < this.state.imageData.length; i++) {
                 if (angle === this.state.imageData[i].angle) {
-                    this.setState({
+                        this.setState({
                         activeImage: this.state.imageData[i].src
                     });
                 }
@@ -131,20 +167,49 @@ var build,
             }
         },
 
+        draw: function () {
+            this.clear();
+            this.updateProductImage();
+            this.updateText();
+
+            this.batchedTick();
+        },
+
+        clear: function () {
+            this.getContext().clearRect(0, 0, this.state.windowWidth, this.state.windowHeight);
+        },
+
+        updateProductImage: function () {
+            var imgPos,
+                img;
+
+            img = new Image();
+            img.src = this.state.activeImage;
+
+            this.setState({
+                imgWidth: img.width,
+                imgHeight: img.height
+            });
+
+            // center image horizontally
+            imgPos = this.state.windowWidth / 2 - this.state.imgWidth / 2;
+
+            this.getContext().drawImage(img, imgPos, 0);
+        },
+
+        updateText: function() {
+            this.getContext().font = '14pt sans-serif';
+            this.getContext().fillText('currently drawn:', 5, 50);
+            this.getContext().fillText('Image: ' + this.state.activeImage, 5, 150);
+            this.getContext().fillText('Angle: ' + this.state.activeAngle + 'deg', 5, 100);
+        },
+
         render: function () {
+            var width = this.state.windowWidth;
+            var height = this.state.imgHeight;
+
             loader = [];
             build = [];
-
-            if (this.state.loading === true) {
-                loader.push(React.DOM.img({
-                    className: 'loader',
-                    key: 'loader-img',
-                    alt: 'loader',
-                    src: '/assets/icons/ajax-loader.svg'
-                }));
-                loader.push(React.DOM.span({className: 'loader-text', key: 'loader-text'}, 'Loading Product View...'));
-            }
-
             if (this.state.imageData) {
                 this.state.imageData.forEach(function (image) {
                     build.push(React.DOM.img({
@@ -155,20 +220,28 @@ var build,
                     }));
                 });
             }
+            if (this.state.loading === true) {
+                loader.push(React.DOM.img({
+                    className: 'loader',
+                    key: 'loader-img',
+                    alt: 'loader',
+                    src: '/assets/icons/ajax-loader.svg'
+                }));
+                loader.push(React.DOM.span({className: 'loader-text', key: 'loader-text'}, 'Loading Product View...'));
+            }
 
             return (
                 React.DOM.div({className: 'image-container'},
                     loader,
-                    React.DOM.div({className: 'image-set'},
+                    React.DOM.div({className: 'preload'},
                         build
                     ),
-                    React.DOM.div({ref: 'hammerHook', className: 'image-active'},
-                        React.DOM.img({
-                            src: this.state.activeImage,
-                            alt: 'product-view-' + this.state.activeAngle,
-                            'data-angle': this.state.activeAngle
-                        })
-                    ),
+                    React.DOM.canvas({
+                        className: 'playground',
+                        width: width,
+                        height: height,
+                        ref: 'canvas'
+                    }),
                     React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
                     React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
                     React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}, 'L')
