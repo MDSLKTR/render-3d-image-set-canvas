@@ -15,8 +15,8 @@ var build,
                 windowWidth: document.documentElement.clientWidth,
                 windowHeight: document.documentElement.clientHeight,
                 inputText: '',
-                xPos: document.documentElement.clientWidth / 2,
-                yPos: 150
+                x: document.documentElement.clientWidth / 2,
+                y: 150
             };
         },
 
@@ -52,7 +52,7 @@ var build,
             this.hammer.get('pan').set({threshold: 0, direction: Hammer.DIRECTION_ALL});
             this.hammer.on('panup', this.panUp);
             this.hammer.on('pandown', this.panDown);
-            this.hammer.on('pan', this.positionElement);
+            this.hammer.on('panstart panmove', this.positionElement);
             this.draw();
             // probably needs debounce
             window.addEventListener('resize', this.scale);
@@ -208,10 +208,14 @@ var build,
             this.setState({inputText: input});
         },
 
+
         positionElement: function (e) {
+            console.log(e);
+            console.log(e.srcEvent.pageX);
+            console.log(e.deltaY);
           this.setState({
-              x: e.deltaX,
-              y: e.deltaY
+              x: e.srcEvent.pageX,
+              y: e.srcEvent.pageY
           });
         },
 
@@ -219,29 +223,21 @@ var build,
 
             this.getContext().save();
 
-            var oldX = this.state.x,
-                oldY = this.state.y;
-
-            oldX += this.state.x;
-            oldY += this.state.y;
-
-            this.setState({
-                xPos: oldX,
-                yPos: oldY
-            });
-
             this.getContext().textAlign = 'center';
             this.getContext().font = '14pt sans-serif';
-            this.getContext().fillText(this.state.inputText, oldX, oldY);
+            this.getContext().fillStyle = '#f50';
+            this.getContext().fillText(this.state.inputText, this.state.x, this.state.y);
             this.getContext().restore();
         },
 
         showDebugInfo: function() {
+            this.getContext().save();
             this.getContext().textAlign = 'start';
             this.getContext().font = '14pt sans-serif';
             this.getContext().fillText('currently drawn:', 5, 50);
             this.getContext().fillText('Image: ' + this.state.activeImage, 5, 150);
             this.getContext().fillText('Angle: ' + this.state.activeAngle + 'deg', 5, 100);
+            this.getContext().restore();
         },
 
         render: function () {
