@@ -16,7 +16,7 @@ var build,
                 windowHeight: document.documentElement.clientHeight,
                 inputText: '',
                 x: document.documentElement.clientWidth / 2,
-                y: 150
+                y: document.documentElement.clientHeight / 5
             };
         },
 
