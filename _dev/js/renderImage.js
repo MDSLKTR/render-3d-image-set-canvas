@@ -199,7 +199,6 @@ var build,
 
             // center image horizontally
             imgPos = this.state.windowWidth / 2 - this.state.imgWidth / 2;
-
             this.getContext().drawImage(img, imgPos, 0);
         },
 
@@ -220,23 +219,25 @@ var build,
         },
 
         updateProductText: function () {
-
             this.getContext().save();
 
             this.getContext().textAlign = 'center';
             this.getContext().font = '14pt sans-serif';
             this.getContext().fillStyle = '#f50';
             this.getContext().fillText(this.state.inputText, this.state.x, this.state.y);
+
             this.getContext().restore();
         },
 
         showDebugInfo: function() {
             this.getContext().save();
+
             this.getContext().textAlign = 'start';
             this.getContext().font = '14pt sans-serif';
             this.getContext().fillText('currently drawn:', 5, 50);
             this.getContext().fillText('Image: ' + this.state.activeImage, 5, 150);
             this.getContext().fillText('Angle: ' + this.state.activeAngle + 'deg', 5, 100);
+
             this.getContext().restore();
         },
 
