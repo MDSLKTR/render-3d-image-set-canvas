@@ -8,6 +8,8 @@
 
 body {
     touch-action: none;
+    margin: 0;
+    padding: 0;
 }
 
 .image-container {
@@ -19,7 +21,6 @@ body {
     .playground {
         position: relative;
         background: grey;
-        border: 1px solid black;
     }
 
     .intro {

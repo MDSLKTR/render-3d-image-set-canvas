@@ -6,7 +6,9 @@
 
 body {
   -ms-touch-action: none;
-      touch-action: none; }
+      touch-action: none;
+  margin: 0;
+  padding: 0; }
 
 .image-container {
   font-family: 'robotomedium', Arial, Helvetica, sans-serif;
@@ -15,8 +17,7 @@ body {
   position: relative; }
   .image-container .playground {
     position: relative;
-    background: grey;
-    border: 1px solid black; }
+    background: grey; }
   .image-container .intro {
     position: relative;
     text-align: center;

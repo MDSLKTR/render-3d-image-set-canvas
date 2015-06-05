@@ -12,8 +12,11 @@ var build,
                 activeImage: '/assets/icons/white.gif',
                 activeAngle: 0,
                 loading: true,
-                windowWidth: window.innerWidth,
-                windowHeight: window.innerHeight
+                windowWidth: document.documentElement.clientWidth,
+                windowHeight: document.documentElement.clientHeight,
+                inputText: '',
+                xPos: document.documentElement.clientWidth / 2,
+                yPos: 150
             };
         },
 
@@ -49,6 +52,7 @@ var build,
             this.hammer.get('pan').set({threshold: 0, direction: Hammer.DIRECTION_ALL});
             this.hammer.on('panup', this.panUp);
             this.hammer.on('pandown', this.panDown);
+            this.hammer.on('pan', this.positionElement);
             this.draw();
             // probably needs debounce
             window.addEventListener('resize', this.scale);
@@ -89,18 +93,20 @@ var build,
         },
 
         scale: function () {
-              this.setState({
-                  windowWidth: window.innerWidth,
-                  windowHeight: window.innerHeight
-          });
+            this.setState({
+                windowWidth: document.documentElement.clientWidth,
+                windowHeight: document.documentElement.clientHeight
+            });
         },
 
         mapImages: function (angle) {
-            for (i = 0; i < this.state.imageData.length; i++) {
-                if (angle === this.state.imageData[i].angle) {
+            if (this.state.imageData) {
+                for (i = 0; i < this.state.imageData.length; i++) {
+                    if (angle === this.state.imageData[i].angle) {
                         this.setState({
-                        activeImage: this.state.imageData[i].src
-                    });
+                            activeImage: this.state.imageData[i].src
+                        });
+                    }
                 }
             }
         },
@@ -169,9 +175,9 @@ var build,
 
         draw: function () {
             this.clear();
+            this.showDebugInfo();
             this.updateProductImage();
-            this.updateText();
-
+            this.updateProductText();
             this.batchedTick();
         },
 
@@ -197,7 +203,41 @@ var build,
             this.getContext().drawImage(img, imgPos, 0);
         },
 
-        updateText: function() {
+        handleInput: function (e) {
+            var input = e.target.value;
+            this.setState({inputText: input});
+        },
+
+        positionElement: function (e) {
+          this.setState({
+              x: e.deltaX,
+              y: e.deltaY
+          });
+        },
+
+        updateProductText: function () {
+
+            this.getContext().save();
+
+            var oldX = this.state.x,
+                oldY = this.state.y;
+
+            oldX += this.state.x;
+            oldY += this.state.y;
+
+            this.setState({
+                xPos: oldX,
+                yPos: oldY
+            });
+
+            this.getContext().textAlign = 'center';
+            this.getContext().font = '14pt sans-serif';
+            this.getContext().fillText(this.state.inputText, oldX, oldY);
+            this.getContext().restore();
+        },
+
+        showDebugInfo: function() {
+            this.getContext().textAlign = 'start';
             this.getContext().font = '14pt sans-serif';
             this.getContext().fillText('currently drawn:', 5, 50);
             this.getContext().fillText('Image: ' + this.state.activeImage, 5, 150);
@@ -205,8 +245,8 @@ var build,
         },
 
         render: function () {
-            var width = this.state.windowWidth;
-            var height = this.state.imgHeight;
+            var width = this.state.windowWidth,
+                height = this.state.imgHeight;
 
             loader = [];
             build = [];
@@ -242,6 +282,11 @@ var build,
                         height: height,
                         ref: 'canvas'
                     }),
+                    React.DOM.input({
+                        className: 'text-overlay',
+                        value: this.state.inputText,
+                        onChange: this.handleInput
+                    }, 'Enter some Text'),
                     React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
                     React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
                     React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}, 'L')
