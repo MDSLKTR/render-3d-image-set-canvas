@@ -27,6 +27,7 @@ body {
     }
 
   select {
+    user-select: none;
     position: absolute;
     left: 50%;
     top: 10px;
@@ -72,10 +73,10 @@ body {
     }
 
     button {
-
-      @media screen and (max-width: 468px) {
-        display: none;
-      }
+        @media screen and (max-width: 468px) {
+            display: none;
+        }
+        user-select: none;
         line-height: 25px;
         font-size: 25px;
         z-index: 1;
