@@ -1,0 +1,14 @@
+{
+  "products" : [
+    {
+      "id": 0,
+      "slug": "plug",
+      "url": "plug-1.json"
+    },
+    {
+      "id": 1,
+      "slug": "plug-2",
+      "url": "plug-2.json"
+    }
+  ]
+}

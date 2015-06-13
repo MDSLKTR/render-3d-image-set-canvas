@@ -15,13 +15,23 @@ body {
 .image-container {
     font-family: 'robotomedium', Arial, Helvetica, sans-serif;
     width: 100%;
+    height: 600px;
     margin: 0 auto;
     position: relative;
 
     .playground {
-        position: relative;
-        background: grey;
+      cursor: pointer;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
+
+  select {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+  }
 
     .intro {
         position: relative;
@@ -62,6 +72,10 @@ body {
     }
 
     button {
+
+      @media screen and (max-width: 468px) {
+        display: none;
+      }
         line-height: 25px;
         font-size: 25px;
         z-index: 1;
@@ -73,12 +87,14 @@ body {
         background: #778899;
 
         &.button-right {
-            position: relative;
-            float: right;
+          position: absolute;
+          right: 35vw;
+          bottom: 0;
         }
         &.button-left {
-            position: relative;
-            float: left;
+          position: absolute;
+          left: 35vw;
+          bottom: 0;
         }
     }
 }

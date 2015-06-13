@@ -1,0 +1,74 @@
+{
+  "product": {
+    "id" : 0,
+    "slug": "Plug",
+    "material": "Plastic",
+    "data": [
+      {
+        "src": "assets/images/Plug_Sequenz_01_0000.jpg",
+        "angle": 0
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0001.jpg",
+        "angle": 24
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0002.jpg",
+        "angle": 48
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0003.jpg",
+        "angle": 72
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0004.jpg",
+        "angle": 96
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0005.jpg",
+        "angle": 120
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0006.jpg",
+        "angle": 144
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0007.jpg",
+        "angle": 168
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0008.jpg",
+        "angle": 192
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0009.jpg",
+        "angle": 216
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0010.jpg",
+        "angle": 240
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0011.jpg",
+        "angle": 264
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0012.jpg",
+        "angle": 288
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0013.jpg",
+        "angle": 312
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0014.jpg",
+        "angle": 336
+      },
+      {
+        "src": "assets/images/Plug_Sequenz_01_0015.jpg",
+        "angle": 360
+      }
+    ]
+  }
+
+}

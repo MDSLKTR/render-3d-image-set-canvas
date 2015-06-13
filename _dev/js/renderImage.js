@@ -1,10 +1,13 @@
 var build,
     i,
     fetchProducts,
-    jsonUrl = 'assets/data/set.json',
+    fetchProduct,
+    productsUrl = 'assets/data/productlist.json',
+    productUrl = 'assets/data/',
     loader,
     start,
     end,
+    createUrl,
     imgWrapper = React.createClass({
         displayName: 'renderImage',
         getInitialState: function () {
@@ -20,29 +23,54 @@ var build,
             };
         },
 
-        getJson: function (product) {
+        getProducts: function () {
             start = new Date().getTime();
             $.ajax({
-                product: product,
-                url: jsonUrl,
+                url: productsUrl,
                 dataType: 'json',
                 success: function (data) {
                     this.setState({
-                        imageData: data.products[product],
-                        activeImage: data.products[product][0].src,
-                        activeAngle: data.products[product][0].angle,
-                        loading: false
+                        loading: false,
+                        products: data.products
+                    });
+
+                    console.log('products fetched!');
+                    clearInterval(fetchProducts);
+
+                    end = new Date().getTime();
+                    console.log('product list fetched in', end - start, 'ms');
+
+                }.bind(this),
+                error: function (xhr, status, err) {
+                    console.error(productsUrl, status, err.toString());
+                }.bind(this)
+            });
+        },
+
+        getProduct: function (id) {
+            createUrl = productUrl + this.state.products[id].url;
+            start = new Date().getTime();
+            $.ajax({
+                url: createUrl,
+                dataType: 'json',
+                success: function (data) {
+                    this.setState({
+                        loading: false,
+                        productId: data.product,
+                        productData: data.product.data,
+                        activeImage: data.product.data[0].src,
+                        activeAngle: data.product.data[0].angle
                     });
 
                     console.log('product images fetched!');
-                    clearInterval(fetchProducts);
+                    clearInterval(fetchProduct);
 
                     end = new Date().getTime();
                     console.log('product image list fetched in', end - start, 'ms');
 
                 }.bind(this),
                 error: function (xhr, status, err) {
-                    console.error(jsonUrl, status, err.toString());
+                    console.error(createUrl, status, err.toString());
                 }.bind(this)
             });
         },
@@ -50,18 +78,28 @@ var build,
         componentDidMount: function () {
             this.hammer = new Hammer(React.findDOMNode(this.refs.canvas));
             this.hammer.get('pan').set({threshold: 0, direction: Hammer.DIRECTION_ALL});
-            this.hammer.on('panup', this.panUp);
-            this.hammer.on('pandown', this.panDown);
-            this.hammer.on('panstart panmove', this.positionElement);
+            this.hammer.on('panleft', this.panLeft);
+            this.hammer.on('panright', this.panRight);
+            //this.hammer.on('panstart panmove', this.positionElement);
             this.draw();
+            fetchProducts = setInterval(this.getProducts, 500);
+
+
             // probably needs debounce
             window.addEventListener('resize', this.scale);
-            fetchProducts = setInterval(this.getJson('id-12345'), 500);
+        },
+
+        handleSelect: function() {
+            var newValue = this.refs.select.getDOMNode().value;
+
+            fetchProduct = setInterval(this.getProduct(newValue), 500);
+
+            //this.setState({products: newValue});
         },
 
         componentWillUnmount: function () {
-            this.hammer.off('panup', this.panUp);
-            this.hammer.off('pandown', this.panDown);
+            this.hammer.off('panleft', this.panLeft);
+            this.hammer.off('panright', this.panRight);
         },
 
         getContext: function () {
@@ -100,41 +138,45 @@ var build,
         },
 
         mapImages: function (angle) {
-            if (this.state.imageData) {
-                for (i = 0; i < this.state.imageData.length; i++) {
-                    if (angle === this.state.imageData[i].angle) {
+            if (this.state.productData) {
+                for (i = 0; i < this.state.productData.length; i++) {
+                    if (angle === this.state.productData[i].angle) {
                         this.setState({
-                            activeImage: this.state.imageData[i].src
+                            activeImage: this.state.productData[i].src
                         });
+
+                        console.log('currently drawn:');
+                        console.log('Image: ' + this.state.productData[i].src);
+                        console.log('Angle: ' + angle);
                     }
                 }
             }
         },
 
-        panDown: function (e) {
+        panRight: function (e) {
             // http://hammerjs.github.io/api/ Event objects
-            console.log('Distance traveled: ' + e.distance);
-            console.log('X-pos: ' + e.deltaX);
-            console.log('Velocity: ' + e.velocityX);
+            //console.log('Distance traveled: ' + e.distance);
+            //console.log('X-pos: ' + e.deltaX);
+            //console.log('Velocity: ' + e.velocityX);
             if (this.state.activeAngle > 0) {
                 this.setState({
-                    activeAngle: this.state.activeAngle - 30
+                    activeAngle: this.state.activeAngle - 24
                 });
                 this.mapImages(this.state.activeAngle);
             } else {
                 this.setState({
-                    activeAngle: 330
+                    activeAngle: 360
                 });
-                this.mapImages(330);
+                this.mapImages(360);
             }
         },
-        panUp: function (e) {
-            console.log('Distance traveled: ' + e.distance);
-            console.log('X-pos: ' + e.deltaX);
-            console.log('Velocity: ' + e.velocityX);
-            if (this.state.activeAngle < 330) {
+        panLeft: function (e) {
+            //console.log('Distance traveled: ' + e.distance);
+            //console.log('X-pos: ' + e.deltaX);
+            //console.log('Velocity: ' + e.velocityX);
+            if (this.state.activeAngle < 360) {
                 this.setState({
-                    activeAngle: this.state.activeAngle + 30
+                    activeAngle: this.state.activeAngle + 24
                 });
                 this.mapImages(this.state.activeAngle);
             } else {
@@ -146,11 +188,11 @@ var build,
         },
 
         incrementAngle: function () {
-            if (this.state.activeAngle < 330) {
+            if (this.state.activeAngle < 360) {
                 this.setState({
-                    activeAngle: this.state.activeAngle + 30
+                    activeAngle: this.state.activeAngle + 24
                 });
-                this.mapImages(this.state.activeAngle + 30);
+                this.mapImages(this.state.activeAngle + 24);
             } else {
                 this.setState({
                     activeAngle: 0
@@ -162,20 +204,19 @@ var build,
         decrementAngle: function () {
             if (this.state.activeAngle > 0) {
                 this.setState({
-                    activeAngle: this.state.activeAngle - 30
+                    activeAngle: this.state.activeAngle - 24
                 });
-                this.mapImages(this.state.activeAngle - 30);
+                this.mapImages(this.state.activeAngle - 24);
             } else {
                 this.setState({
-                    activeAngle: 330
+                    activeAngle: 360
                 });
-                this.mapImages(330);
+                this.mapImages(360);
             }
         },
 
         draw: function () {
             this.clear();
-            this.showDebugInfo();
             this.updateProductImage();
             this.updateProductText();
             this.batchedTick();
@@ -186,8 +227,7 @@ var build,
         },
 
         updateProductImage: function () {
-            var imgPos,
-                img;
+            var img;
 
             img = new Image();
             img.src = this.state.activeImage;
@@ -197,9 +237,7 @@ var build,
                 imgHeight: img.height
             });
 
-            // center image horizontally
-            imgPos = this.state.windowWidth / 2 - this.state.imgWidth / 2;
-            this.getContext().drawImage(img, imgPos, 0);
+            this.getContext().drawImage(img, 0, 0);
         },
 
         handleInput: function (e) {
@@ -209,9 +247,9 @@ var build,
 
 
         positionElement: function (e) {
-            console.log(e);
-            console.log(e.srcEvent.pageX);
-            console.log(e.deltaY);
+            //console.log(e);
+            //console.log(e.srcEvent.pageX);
+            //console.log(e.deltaY);
           this.setState({
               x: e.srcEvent.pageX,
               y: e.srcEvent.pageY
@@ -229,26 +267,34 @@ var build,
             this.getContext().restore();
         },
 
-        showDebugInfo: function() {
-            this.getContext().save();
-
-            this.getContext().textAlign = 'start';
-            this.getContext().font = '14pt sans-serif';
-            this.getContext().fillText('currently drawn:', 5, 50);
-            this.getContext().fillText('Image: ' + this.state.activeImage, 5, 150);
-            this.getContext().fillText('Angle: ' + this.state.activeAngle + 'deg', 5, 100);
-
-            this.getContext().restore();
-        },
-
         render: function () {
-            var width = this.state.windowWidth,
-                height = this.state.imgHeight;
+            var width = this.state.imgWidth,
+                height = this.state.imgHeight,
+                products;
 
             loader = [];
             build = [];
-            if (this.state.imageData) {
-                this.state.imageData.forEach(function (image) {
+            products = [];
+
+            products.push(React.DOM.option({
+                key: products.key,
+                value: 'select',
+                style: {display: 'none'}
+            }, 'Select Product'
+            ));
+
+            if (this.state.products) {
+                this.state.products.forEach(function (product) {
+                    products.push(React.DOM.option({
+                        key: product.key,
+                        value: product.id
+                    }, product.slug));
+                });
+            }
+
+
+            if (this.state.productData) {
+                this.state.productData.forEach(function (image) {
                     build.push(React.DOM.img({
                         key: 'angle-' + image.angle,
                         alt: 'product-view-' + image.angle,
@@ -279,12 +325,16 @@ var build,
                         height: height,
                         ref: 'canvas'
                     }),
-                    React.DOM.input({
-                        className: 'text-overlay',
-                        value: this.state.inputText,
-                        onChange: this.handleInput
-                    }, 'Enter some Text'),
-                    React.DOM.span({className: 'intro'}, 'Click(Touch) and Drag or click the buttons to rotate'),
+                    //React.DOM.input({
+                    //    className: 'text-overlay',
+                    //    value: this.state.inputText,
+                    //    onChange: this.handleInput
+                    //}, 'Enter some Text'),
+                    React.DOM.select({
+                        className: 'select-product',
+                        ref: 'select',
+                        onChange: this.handleSelect
+                    }, products),
                     React.DOM.button({onClick: this.incrementAngle, className: 'button-right'}, 'R'),
                     React.DOM.button({onClick: this.decrementAngle, className: 'button-left'}, 'L')
                 )
