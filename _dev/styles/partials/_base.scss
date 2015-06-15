@@ -20,19 +20,22 @@ body {
     position: relative;
 
     .playground {
-      cursor: pointer;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+        cursor: pointer;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: auto;
+        max-width: 600px;
     }
 
-  select {
-    user-select: none;
-    position: absolute;
-    left: 50%;
-    top: 10px;
-    transform: translateX(-50%);
-  }
+    select {
+        user-select: none;
+        position: absolute;
+        left: 50%;
+        top: 10px;
+        transform: translateX(-50%);
+    }
 
     .intro {
         position: relative;
@@ -88,14 +91,14 @@ body {
         background: #778899;
 
         &.button-right {
-          position: absolute;
-          right: 35vw;
-          bottom: 0;
+            position: absolute;
+            right: 35vw;
+            bottom: 0;
         }
         &.button-left {
-          position: absolute;
-          left: 35vw;
-          bottom: 0;
+            position: absolute;
+            left: 35vw;
+            bottom: 0;
         }
     }
 }
